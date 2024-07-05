@@ -8,7 +8,7 @@ public class Application {
 		} else {
 		//No CLI arguments, then ask for user input
 			Scanner scanner = new Scanner(System.in);
-			System.out.println("Enter Operation (e.g., add, subtract, multiply, divide):");
+			System.out.println("Enter Operation (e.g., add, factorial, subtract, multiply, divide):");
 			String operation = scanner.next();
 			
 			switch (operation.toLowerCase()) {
