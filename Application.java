@@ -7,7 +7,7 @@
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            System.out.println("\nEnter operation (add, subtract, multiply, divide, pow, sqrt, log, log10, sin, cos, tan, factorial) or 'exit' to quit:");
+            System.out.println("\nEnter operation (add, subtract, multiply, divide, pow, sqrt, log, log10, sin, cos, tan, factorial, permutation) or 'exit' to quit");
             String operation = scanner.next();
 
             if (operation.equalsIgnoreCase("exit")) {
@@ -15,11 +15,10 @@
                 break;
             }
 
-            //The If Statement is used to filter out the one operand calculations to strictly pertain to two operand calculations.
             if (!operation.equalsIgnoreCase("sqrt") && !operation.equalsIgnoreCase("log")
                     && !operation.equalsIgnoreCase("log10") && !operation.equalsIgnoreCase("sin")
                     && !operation.equalsIgnoreCase("cos") && !operation.equalsIgnoreCase("tan")
-                    && !operation.equalsIgnoreCase("factorial")) {
+                    && !operation.equalsIgnoreCase("factorial") && !operation.equalsIgnoreCase("permutation")) {
                 System.out.print("Enter first number: ");
                 double num1 = scanner.nextDouble();
                 System.out.print("Enter second number: ");
@@ -41,11 +40,11 @@
                     case "pow":
                         System.out.println("Result: " + power(num1, num2));
                         break;
-                    default:// if none of the switch case for the two operand operation choices are not chosen then default to invalid choice.
+                    default:
                         System.out.println("Invalid operation.");
                         break;
                 }
-            } else { //If the strictly two operand operations are not used or skipped we go to the one operand operations with this else statement.
+            } else {
                 System.out.print("Enter number: ");
                 double num = scanner.nextDouble();
 
@@ -71,7 +70,17 @@
                     case "factorial":
                         System.out.println("Result: " + factorial((int) num));
                         break;
-                    default: // if no choices match the switch cases for the single operand operations then default to invalid choice.
+                    case "permutation":
+                        System.out.print("Enter number of selections: ");
+                        int selections = scanner.nextInt();
+                        try {
+                            System.out.println("Result (recursive): " + permutationsRecursive((int) num, selections));
+                            System.out.println("Result (iterative): " + permutationsIterative((int) num, selections));
+                        } catch (IllegalArgumentException e) {
+                            System.out.println(e.getMessage());
+                        }
+                        break;
+                    default:
                         System.out.println("Invalid operation.");
                         break;
                 }
@@ -165,5 +174,33 @@
     //Tangent Function:
     public static double tan(double angleRadians) {
     	return Math.tan(angleRadians);
+    }
+    
+    //Recursive Permutation Method Public:
+    public static long permutationsRecursive(int totalElements, int selection) {
+        if (totalElements < 0 || totalElements > 100 || selection < 0 || selection > totalElements) {
+            throw new IllegalArgumentException("Invalid input: Total elements must be between 0 and 100, and selections must be between 0 and total elements.");
+        }
+        return permHelper(totalElements, selection);
+    }
+    
+    //Recursive Permutation Method Public Method To Aid Selection Process:
+    private static long permHelper(int totalElements, int selection) {
+        if (selection == 0) {
+            return 1;
+        }
+        return totalElements * permHelper(totalElements - 1, selection - 1);
+    }
+    
+    // YES! There is another way to solve this given problem by doing this algorithm in an Iterative Manner: This is the Iterative Version Of The Recursive Permutations Method:
+    public static long permutationsIterative(int totalElements, int selection) {
+        if (totalElements < 0 || totalElements > 100 || selection < 0 || selection > totalElements) {
+            throw new IllegalArgumentException("Invalid input: Total elements must be between 0 and 100, and selections must be between 0 and total elements.");
+        }
+        long result = 1;
+        for (int i = 0; i < selection; i++) {
+            result *= totalElements - i;
+        }
+        return result;
     }
 }
